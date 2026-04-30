@@ -1,9 +1,10 @@
 import './App.css'
+import { LineGraph } from './components/graphs/LineGraph'
 
 function App() {
   return (
     <>
-      <p>hi</p>
+      <LineGraph></LineGraph>
     </>
   )
 }
