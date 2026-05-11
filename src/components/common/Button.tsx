@@ -1,15 +1,13 @@
 import './Button.css';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'accent' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'danger';
   fullWidth?: boolean;
   isLoading?: boolean;
 }
 
 export const Button = ({
   variant = 'primary',
-  size = 'md',
   fullWidth = false,
   isLoading = false,
   disabled,
@@ -19,7 +17,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`button button--${variant} button--${size} ${fullWidth ? 'button--full-width' : ''} ${className}`}
+      className={`button button--${variant} ${fullWidth ? 'button--full-width' : ''} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

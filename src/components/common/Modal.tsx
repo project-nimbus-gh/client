@@ -74,7 +74,7 @@ export const Modal = ({
             )}
             {onConfirm && (
               <Button
-                variant={isDangerous ? 'danger' : 'accent'}
+                variant={isDangerous ? 'danger' : 'primary'}
                 onClick={handleConfirm}
               >
                 {confirmText}

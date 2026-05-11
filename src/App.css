@@ -31,12 +31,6 @@
     font-size: 2.75rem;
     font-weight: 700;
     letter-spacing: -0.03em;
-    background: linear-gradient(135deg,
-        var(--accent-green),
-        var(--accent-yellow));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 
   p {

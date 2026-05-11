@@ -13,6 +13,7 @@
   font-size: 0.95rem;
   background-color: hsl(0, 0%, 13%);
   color: var(--text-primary);
+  padding: 0.5rem 1rem;
 
   &:hover:not(:disabled) {
     background-color: hsl(0, 0%, 18%);
@@ -53,16 +54,6 @@
   }
 }
 
-.button--accent {
-  background-color: var(--accent-green);
-  color: var(--bg-base);
-  font-weight: 600;
-
-  &:hover:not(:disabled) {
-    background-color: hsla(129, 77%, 48%, 1);
-  }
-}
-
 .button--danger {
   background-color: var(--accent-red);
   color: var(--bg-base);
@@ -71,22 +62,6 @@
   &:hover:not(:disabled) {
     background-color: hsla(4, 100%, 76%, 1);
   }
-}
-
-/* Sizes */
-.button--sm {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
-}
-
-.button--md {
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
-}
-
-.button--lg {
-  padding: 0.7rem 1.4rem;
-  font-size: 1rem;
 }
 
 /* Full width */

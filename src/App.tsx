@@ -106,11 +106,7 @@ function App() {
               <div className="component-grid">
                 <Button>Primary</Button>
                 <Button variant="secondary">Secondary</Button>
-                <Button variant="accent">Accent</Button>
                 <Button variant="danger">Danger</Button>
-                <Button size="sm">Small</Button>
-                <Button size="md">Medium</Button>
-                <Button size="lg">Large</Button>
                 <Button disabled>Disabled</Button>
                 <Button isLoading={loadingBtn}>
                   {loadingBtn ? 'Loading' : 'Click Me'}
@@ -199,7 +195,7 @@ function App() {
                   </CardBody>
                   <CardFooter>
                     <Button variant="secondary">Cancel</Button>
-                    <Button variant="accent">Save</Button>
+                    <Button>Save</Button>
                   </CardFooter>
                 </Card>
               </div>
@@ -213,13 +209,13 @@ function App() {
             </CardHeader>
             <CardBody>
               <div className="component-grid">
-                <Button onClick={() => setShowModal(true)}>
+                <Button onClick={() => setShowModal(true)} variant="secondary">
                   Open Modal
                 </Button>
-                <Button onClick={() => setShowAlert(true)}>
+                <Button onClick={() => setShowAlert(true)} variant="secondary">
                   Show Alert
                 </Button>
-                <Button onClick={() => setShowConfirm(true)} variant="accent">
+                <Button onClick={() => setShowConfirm(true)}>
                   Confirm Action
                 </Button>
               </div>
