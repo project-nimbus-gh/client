@@ -6,9 +6,9 @@ import type {
   StaffUsersPayload,
 } from '../../../../common';
 import { normalizePunishment, normalizeUser } from '../../../../common';
-import type { NimbusRequestClient } from './client';
+import type { CaelusRequestClient } from './client';
 
-export function createStaffApi(client: NimbusRequestClient) {
+export function createStaffApi(client: CaelusRequestClient) {
   return {
     async summary() {
       return client.requestJson<StaffSummary>('/api/staff/summary');

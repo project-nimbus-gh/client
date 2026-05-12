@@ -1,16 +1,24 @@
-.dashboard-page {
+.dashboard-layout {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  background: var(--bg-base);
+}
+
+.dashboard-main {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
-  background: var(--bg-base);
 }
 
 .dashboard-page__card {
   width: 100%;
-  max-width: 440px;
+  max-width: 640px;
 }
 
 .dashboard-page__user-row {

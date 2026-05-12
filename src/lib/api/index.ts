@@ -1,13 +1,13 @@
 import { createAuthApi } from './auth';
 import { createDevicesApi } from './devices';
 import { createMarketApi } from './market';
-import { createNimbusRequestClient, type ApiClientConfig, type NimbusRequestClient } from './client';
+import { createCaelusRequestClient, type ApiClientConfig, type CaelusRequestClient } from './client';
 import { createPunishmentsApi } from './punishments';
 import { createStaffApi } from './staff';
 import { createUsersApi } from './users';
 import { createProfileApi } from './profile';
 
-export type NimbusApiClient = NimbusRequestClient & {
+export type CaelusApiClient = CaelusRequestClient & {
   getStatus: () => Promise<string>;
   auth: ReturnType<typeof createAuthApi>;
   users: ReturnType<typeof createUsersApi>;
@@ -18,8 +18,8 @@ export type NimbusApiClient = NimbusRequestClient & {
   market: ReturnType<typeof createMarketApi>;
 };
 
-export function createNimbusApiClient(config: ApiClientConfig = {}): NimbusApiClient {
-  const client = createNimbusRequestClient(config);
+export function createCaelusApiClient(config: ApiClientConfig = {}): CaelusApiClient {
+  const client = createCaelusRequestClient(config);
 
   return {
     ...client,
@@ -36,7 +36,7 @@ export function createNimbusApiClient(config: ApiClientConfig = {}): NimbusApiCl
   };
 }
 
-export const api = createNimbusApiClient();
+export const api = createCaelusApiClient();
 
 export type {
   ApiErrorBody,

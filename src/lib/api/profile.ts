@@ -6,9 +6,9 @@ import type {
   SerializedPublicUser,
 } from '../../../../common';
 import { normalizeUser } from '../../../../common';
-import type { NimbusRequestClient } from './client';
+import type { CaelusRequestClient } from './client';
 
-export function createProfileApi(client: NimbusRequestClient) {
+export function createProfileApi(client: CaelusRequestClient) {
   return {
     async me() {
       const response = await client.requestJson<ProfileMePayload>('/api/profile/me');

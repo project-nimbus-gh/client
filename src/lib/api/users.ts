@@ -1,9 +1,9 @@
 import type { UserMePayload, UserMeResponse } from '../../../../common';
 import type { SerializedPublicUser } from '../../../../common';
 import { normalizePunishment, normalizeUser } from '../../../../common';
-import type { NimbusRequestClient } from './client';
+import type { CaelusRequestClient } from './client';
 
-export function createUsersApi(client: NimbusRequestClient) {
+export function createUsersApi(client: CaelusRequestClient) {
   return {
     async me() {
       const response = await client.requestJson<UserMePayload>('/api/users/me');

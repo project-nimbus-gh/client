@@ -1,9 +1,9 @@
 import type { AuthMePayload, AuthMeResponse, AuthResponsePayload, AuthSession } from '../../../../common';
 import { normalizePunishment } from '../../../../common';
 import { normalizeUser } from '../../../../common';
-import type { NimbusRequestClient } from './client';
+import type { CaelusRequestClient } from './client';
 
-export function createAuthApi(client: NimbusRequestClient) {
+export function createAuthApi(client: CaelusRequestClient) {
   return {
     async register(input: { username: string; password: string; country?: string }) {
       const response = await client.requestJson<AuthResponsePayload>('/api/auth/register', {

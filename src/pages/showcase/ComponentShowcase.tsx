@@ -1,7 +1,7 @@
 import './ComponentShowcase.css';
 import { useState } from 'react';
-import { LineGraph } from '../components/graphs/LineGraph';
-import type { LineGraphConfig } from '../components/graphs/types';
+import { LineGraph } from '../../components/graphs/LineGraph';
+import type { LineGraphConfig } from '../../components/graphs/types';
 import {
   Button,
   Card,
@@ -12,7 +12,7 @@ import {
   Modal,
   Alert,
   ConfirmDialog,
-} from '../components/common';
+} from '../../components/common';
 
 function generateRealisticTemperature(dayIndex: number, totalDays: number): number {
   const yearProgress = dayIndex / totalDays;
@@ -93,7 +93,7 @@ export function ComponentShowcase() {
     <div className="app">
       <div className="app__container">
         <header className="app__header">
-          <h1>Project Nimbus</h1>
+          <h1>Caelus</h1>
           <p>Component Library & Design System</p>
         </header>
 

@@ -1,3 +1,3 @@
-export { AuthPage } from './AuthPage';
-export { ComponentShowcase } from './ComponentShowcase';
-export { DashboardPage } from './DashboardPage';
+export { AuthPage } from './auth/AuthPage';
+export { ComponentShowcase } from './showcase/ComponentShowcase';
+export { DashboardPage } from './dashboard/DashboardPage';

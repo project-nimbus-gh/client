@@ -65,31 +65,6 @@
   gap: 1rem;
 }
 
-.auth-form__actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.25rem;
-}
-
-.auth-form__link {
-  color: hsl(180, 67%, 60%);
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: color 0.15s ease;
-  font-weight: 500;
-
-  &:hover {
-    color: hsl(180, 67%, 75%);
-    text-decoration: underline;
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--accent-green);
-    outline-offset: 2px;
-    border-radius: 2px;
-  }
-}
-
 .auth-form__submit {
   margin-top: 0.5rem;
   font-weight: 600;

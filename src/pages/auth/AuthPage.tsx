@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AuthPage.css';
-import { Button, Card, CardHeader, CardBody, CardFooter, Input } from '../components/common';
-import { api } from '../lib/api';
+import { Button, Card, CardHeader, CardBody, CardFooter, Input } from '../../components/common';
+import { api } from '../../lib/api';
 
 type AuthMode = 'login' | 'signup';
 
@@ -114,18 +114,12 @@ export const AuthPage = () => {
     <div className="auth-page">
       <div className="auth-page__container">
         <div className="auth-page__header">
-          <h1>Project Nimbus</h1>
-          <p>{isSignup ? 'Create your account' : 'Welcome back'}</p>
+          <h1>Caelus</h1>
         </div>
 
         <Card elevated className="auth-page__card">
           <CardHeader>
             <h2>{isSignup ? 'Sign Up' : 'Log In'}</h2>
-            <p>
-              {isSignup
-                ? 'Get started with Project Nimbus'
-                : 'Access your device dashboard'}
-            </p>
           </CardHeader>
 
           <CardBody>
@@ -172,14 +166,6 @@ export const AuthPage = () => {
                 />
               )}
 
-              {!isSignup && (
-                <div className="auth-form__actions">
-                  <a href="#" className="auth-form__link">
-                    Forgot password?
-                  </a>
-                </div>
-              )}
-
               <Button
                 variant="primary"
                 fullWidth
@@ -207,7 +193,7 @@ export const AuthPage = () => {
         </Card>
 
         <div className="auth-page__footer">
-          <p>&copy; 2026 Project Nimbus. All rights reserved.</p>
+          <p>&copy; 2026 Caelus. All rights reserved.</p>
         </div>
       </div>
     </div>

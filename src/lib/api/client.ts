@@ -66,9 +66,9 @@ async function readResponseBody(response: Response) {
   return text;
 }
 
-export function createNimbusRequestClient(config: ApiClientConfig = {}) {
+export function createCaelusRequestClient(config: ApiClientConfig = {}) {
   const baseUrl = normalizeBaseUrl(config.baseUrl ?? import.meta.env.VITE_API_BASE_URL);
-  const storageKey = config.storageKey ?? 'nimbus-api-token';
+  const storageKey = config.storageKey ?? 'caelus-api-token';
 
   async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
     const headers = new Headers(options.headers);
@@ -131,4 +131,4 @@ export function createNimbusRequestClient(config: ApiClientConfig = {}) {
   };
 }
 
-export type NimbusRequestClient = ReturnType<typeof createNimbusRequestClient>;
+export type CaelusRequestClient = ReturnType<typeof createCaelusRequestClient>;

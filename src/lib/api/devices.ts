@@ -1,8 +1,8 @@
 import type { DeviceListPayload, DevicePayload } from '../../../../common';
 import { normalizeDevice } from '../../../../common';
-import type { NimbusRequestClient } from './client';
+import type { CaelusRequestClient } from './client';
 
-export function createDevicesApi(client: NimbusRequestClient) {
+export function createDevicesApi(client: CaelusRequestClient) {
   return {
     async register(input: { serial: number; location: { lat: number; lon: number } }) {
       const response = await client.requestJson<DevicePayload>('/api/devices/register', {

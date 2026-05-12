@@ -1,6 +1,6 @@
-# Nimbus Client
+# Caelus Client
 
-Frontend web client for Nimbus, built with React, TypeScript, and Vite.
+Frontend web client for Caelus, built with React, TypeScript, and Vite.
 
 ## Prerequisites
 

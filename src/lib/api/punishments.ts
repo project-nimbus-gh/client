@@ -1,8 +1,8 @@
 import type { PunishmentPayload, PunishmentsMePayload, PunishmentsMeResponse } from '../../../../common';
 import { normalizePunishment, normalizeUser } from '../../../../common';
-import type { NimbusRequestClient } from './client';
+import type { CaelusRequestClient } from './client';
 
-export function createPunishmentsApi(client: NimbusRequestClient) {
+export function createPunishmentsApi(client: CaelusRequestClient) {
   return {
     async me() {
       const response = await client.requestJson<PunishmentsMePayload>('/api/punishments/me');
