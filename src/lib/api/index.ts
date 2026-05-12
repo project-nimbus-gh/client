@@ -1,0 +1,59 @@
+import { createAuthApi } from './auth';
+import { createDevicesApi } from './devices';
+import { createMarketApi } from './market';
+import { createNimbusRequestClient, type ApiClientConfig, type NimbusRequestClient } from './client';
+import { createPunishmentsApi } from './punishments';
+import { createStaffApi } from './staff';
+import { createUsersApi } from './users';
+
+export type NimbusApiClient = NimbusRequestClient & {
+  getStatus: () => Promise<string>;
+  auth: ReturnType<typeof createAuthApi>;
+  users: ReturnType<typeof createUsersApi>;
+  punishments: ReturnType<typeof createPunishmentsApi>;
+  devices: ReturnType<typeof createDevicesApi>;
+  staff: ReturnType<typeof createStaffApi>;
+  market: ReturnType<typeof createMarketApi>;
+};
+
+export function createNimbusApiClient(config: ApiClientConfig = {}): NimbusApiClient {
+  const client = createNimbusRequestClient(config);
+
+  return {
+    ...client,
+    async getStatus() {
+      return client.requestText('/api/status', { auth: false });
+    },
+    auth: createAuthApi(client),
+    users: createUsersApi(client),
+    punishments: createPunishmentsApi(client),
+    devices: createDevicesApi(client),
+    staff: createStaffApi(client),
+    market: createMarketApi(client),
+  };
+}
+
+export const api = createNimbusApiClient();
+
+export type {
+  ApiErrorBody,
+  AuthMePayload,
+  AuthMeResponse,
+  AuthResponsePayload,
+  AuthSession,
+  DeviceListPayload,
+  DevicePayload,
+  MarketPurchaseResponse,
+  PurchaseRequest,
+  PunishmentPayload,
+  PunishmentsMePayload,
+  PunishmentsMeResponse,
+  StaffPunishmentsPayload,
+  StaffRoleUpdatePayload,
+  StaffRoleUpdateRequest,
+  StaffSummary,
+  StaffUsersPayload,
+  UserMePayload,
+  UserMeResponse,
+} from '../../../../common';
+export type { PublicDevice, PublicPunishment, PublicUser, UserRole } from '../../../../common';

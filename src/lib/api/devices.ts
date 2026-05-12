@@ -1,0 +1,23 @@
+import type { DeviceListPayload, DevicePayload } from '../../../../common';
+import { normalizeDevice } from '../../../../common';
+import type { NimbusRequestClient } from './client';
+
+export function createDevicesApi(client: NimbusRequestClient) {
+  return {
+    async register(input: { serial: number; location: { lat: number; lon: number } }) {
+      const response = await client.requestJson<DevicePayload>('/api/devices/register', {
+        method: 'POST',
+        body: input,
+      });
+      return normalizeDevice(response.device);
+    },
+    async listMine() {
+      const response = await client.requestJson<DeviceListPayload>('/api/devices/mine');
+      return response.devices.map(normalizeDevice);
+    },
+    async getBySerial(serial: number) {
+      const response = await client.requestJson<DevicePayload>(`/api/devices/${serial}`);
+      return normalizeDevice(response.device);
+    },
+  };
+}

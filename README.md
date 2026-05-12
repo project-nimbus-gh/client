@@ -45,3 +45,11 @@ npm run lint
 - `vite.config.ts`: Vite config
 - `tsconfig*.json`: TypeScript config
 - `eslint.config.js`: ESLint config
+
+## API Client
+
+The client exposes a typed API wrapper in `src/lib/api`, backed by shared types and utilities in `common/`.
+
+- Use `api.auth.login(...)`, `api.auth.register(...)`, and `api.auth.logout()` for session flows.
+- Use `api.users.*`, `api.devices.*`, `api.punishments.*`, `api.staff.*`, and `api.market.purchase(...)` for higher-level app actions.
+- Set `VITE_API_BASE_URL` if the HTTP server is not reachable through the default `/api` path.
