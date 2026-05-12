@@ -12,13 +12,6 @@ export function createUsersApi(client: NimbusRequestClient) {
         activeSuspension: response.activeSuspension ? normalizePunishment(response.activeSuspension) : null,
       } satisfies UserMeResponse;
     },
-    async updateMe(input: { username?: string; country?: string }) {
-      const response = await client.requestJson<{ user: SerializedPublicUser }>('/api/users/me', {
-        method: 'PATCH',
-        body: input,
-      });
-      return normalizeUser(response.user);
-    },
     async getByUuid(uuid: string) {
       const response = await client.requestJson<{ user: SerializedPublicUser; requestedBy: SerializedPublicUser }>(`/api/users/${uuid}`);
       return {

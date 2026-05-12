@@ -5,11 +5,13 @@ import { createNimbusRequestClient, type ApiClientConfig, type NimbusRequestClie
 import { createPunishmentsApi } from './punishments';
 import { createStaffApi } from './staff';
 import { createUsersApi } from './users';
+import { createProfileApi } from './profile';
 
 export type NimbusApiClient = NimbusRequestClient & {
   getStatus: () => Promise<string>;
   auth: ReturnType<typeof createAuthApi>;
   users: ReturnType<typeof createUsersApi>;
+  profile: ReturnType<typeof createProfileApi>;
   punishments: ReturnType<typeof createPunishmentsApi>;
   devices: ReturnType<typeof createDevicesApi>;
   staff: ReturnType<typeof createStaffApi>;
@@ -26,6 +28,7 @@ export function createNimbusApiClient(config: ApiClientConfig = {}): NimbusApiCl
     },
     auth: createAuthApi(client),
     users: createUsersApi(client),
+    profile: createProfileApi(client),
     punishments: createPunishmentsApi(client),
     devices: createDevicesApi(client),
     staff: createStaffApi(client),
@@ -48,6 +51,10 @@ export type {
   PunishmentPayload,
   PunishmentsMePayload,
   PunishmentsMeResponse,
+  ProfileCountriesPayload,
+  ProfileCountriesResponse,
+  ProfileMePayload,
+  ProfileMeResponse,
   StaffPunishmentsPayload,
   StaffRoleUpdatePayload,
   StaffRoleUpdateRequest,

@@ -1,4 +1,4 @@
-import type { ApiErrorBody } from '../../../../common';
+import { serializeDate, type ApiErrorBody } from '../../../../common';
 
 export type ApiClientConfig = {
   baseUrl?: string;
