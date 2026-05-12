@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { IconCrown, IconTools } from '@tabler/icons-react';
 import { api, type PublicUser, type ProfileCountriesResponse } from '../lib/api';
-import { Button, Card, CardBody, CardHeader } from '../components/common';
+import { Button, Card, CardBody, CardHeader, UsernameDisplay } from '../components/common';
 import './DashboardPage.css';
 
 function countryCodeToFlag(code?: string) {
@@ -10,18 +9,6 @@ function countryCodeToFlag(code?: string) {
   const upper = code.toUpperCase();
   const points = [...upper].map((char) => 127397 + char.charCodeAt(0));
   return String.fromCodePoint(...points);
-}
-
-function RoleIcon({ role }: { role: PublicUser['role'] }) {
-  if (role === 'owner') {
-    return <IconCrown size={18} stroke={2} aria-label="Owner" />;
-  }
-
-  if (role === 'staff') {
-    return <IconTools size={18} stroke={2} aria-label="Staff" />;
-  }
-
-  return null;
 }
 
 export const DashboardPage = () => {
@@ -116,15 +103,12 @@ export const DashboardPage = () => {
         </CardHeader>
 
         <CardBody>
-          <div className="dashboard-page__user-row">
-            <span className="dashboard-page__role-icon">
-              <RoleIcon role={user.role} />
-            </span>
-            <span className="dashboard-page__username">{user.username}</span>
-            {countryCodeToFlag(user.country) && (
-              <span className="dashboard-page__flag">{countryCodeToFlag(user.country)}</span>
-            )}
-          </div>
+          <UsernameDisplay
+            username={user.username}
+            role={user.role}
+            country={user.country}
+            className="dashboard-page__user-row"
+          />
 
           <div className="dashboard-page__field">
             <label htmlFor="country-select">Country</label>
