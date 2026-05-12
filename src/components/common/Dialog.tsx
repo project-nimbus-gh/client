@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Modal } from './Modal';
 
 export interface AlertProps {
@@ -16,7 +16,6 @@ export const Alert = ({
   onClose,
   title,
   children,
-  variant = 'info',
   actionText = 'OK',
   onAction,
 }: AlertProps) => {
