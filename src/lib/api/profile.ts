@@ -29,5 +29,12 @@ export function createProfileApi(client: OmbrRequestClient) {
       });
       return normalizeUser(response.user);
     },
+    async editUser(userUuid: string, input: { country?: string; bio?: string; socialLinks?: Record<string, string | undefined> }) {
+      const response = await client.requestJson<{ user: SerializedPublicUser }>(`/api/profile/${userUuid}`, {
+        method: 'PATCH',
+        body: input,
+      });
+      return normalizeUser(response.user);
+    },
   };
 }

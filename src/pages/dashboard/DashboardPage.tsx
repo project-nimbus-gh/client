@@ -1,43 +1,67 @@
-import { useEffect, useMemo, useState } from 'react';
-import { api, type PublicUser, type ProfileCountriesResponse } from '../../lib/api';
-import { Button, Card, CardBody, CardHeader, EmojiText, UsernameDisplay } from '../../components/common';
+import { useEffect, useState } from 'react';
+import { api, type PublicUser, type PublicPunishment } from '../../lib/api';
+import { Card, CardBody, CardHeader, UsernameDisplay, ProfileCard } from '../../components/common';
 import { Sidebar } from '../../components/layout';
 import './DashboardPage.css';
 
-function countryCodeToFlag(code?: string) {
-  if (!code || code.length !== 2) return null;
+function PunishmentCountdown({ endsAt, isPermanent }: { endsAt: Date; isPermanent: boolean }) {
+  const [timeLeft, setTimeLeft] = useState('');
 
-  const upper = code.toUpperCase();
-  const points = [...upper].map((char) => 127397 + char.charCodeAt(0));
-  return String.fromCodePoint(...points);
+  useEffect(() => {
+    const update = () => {
+      if (isPermanent) {
+        setTimeLeft('Permanent');
+        return;
+      }
+
+      const now = new Date().getTime();
+      const end = endsAt.getTime();
+      const diff = end - now;
+
+      if (diff <= 0) {
+        setTimeLeft('Expired');
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+      if (days > 0) {
+        setTimeLeft(`${days}d ${hours}h`);
+      } else if (hours > 0) {
+        setTimeLeft(`${hours}h ${minutes}m`);
+      } else {
+        setTimeLeft(`${minutes}m`);
+      }
+    };
+
+    update();
+    const interval = setInterval(update, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, [endsAt, isPermanent]);
+
+  return <span className="dashboard-page__countdown">{timeLeft}</span>;
 }
 
 export const DashboardPage = () => {
   const [user, setUser] = useState<PublicUser | null>(null);
-  const [countries, setCountries] = useState<ProfileCountriesResponse['countries']>([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [activeSuspension, setActiveSuspension] = useState<PublicPunishment | null>(null);
   const [activePage, setActivePage] = useState<string>('overview');
   const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
-      setError(null);
 
       try {
-        const [profile, countryData] = await Promise.all([
-          api.profile.me(),
-          api.profile.getCountries(),
-        ]);
-
-        setUser(profile.user);
-        setSelectedCountry(profile.user.country ?? '');
-        setCountries(countryData.countries);
+        const userData = await api.users.me();
+        setUser(userData.user);
+        setActiveSuspension(userData.activeSuspension);
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Failed to load dashboard data';
-        setError(message);
+        console.error(message);
       } finally {
         setIsLoading(false);
       }
@@ -46,31 +70,7 @@ export const DashboardPage = () => {
     void load();
   }, []);
 
-  const currentCountryName = useMemo(() => {
-    if (!selectedCountry) return 'No country selected';
-    const found = countries.find((country) => country.code === selectedCountry);
-    return found?.name ?? selectedCountry;
-  }, [countries, selectedCountry]);
-
-  const isCountryChanged = user?.country !== selectedCountry;
-
-  const handleSaveCountry = async () => {
-    if (!selectedCountry) return;
-
-    setIsSaving(true);
-    setError(null);
-
-    try {
-      const updated = await api.profile.updateCountry({ country: selectedCountry });
-      setUser(updated);
-      setSelectedCountry(updated.country ?? selectedCountry);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to update country';
-      setError(message);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  const isSuspended = activeSuspension !== null;
 
   if (isLoading) {
     return (
@@ -106,126 +106,141 @@ export const DashboardPage = () => {
     <div className="dashboard-layout">
       <Sidebar activeTab={activePage} onChange={setActivePage} username={user.username} role={user.role} country={user.country} />
       <main className="dashboard-main">
-        {activePage === 'overview' && (
+        {isSuspended ? (
+          // Jail tab for suspended users
           <Card className="dashboard-page__card" elevated>
             <CardHeader>
-              <h2>Dashboard</h2>
-              <p>Profile summary</p>
+              <h2>Account Suspended</h2>
+              <p>You are currently under a suspension</p>
             </CardHeader>
-
             <CardBody>
-              <UsernameDisplay
-                username={user.username}
-                role={user.role}
-                country={user.country}
-                className="dashboard-page__user-row"
-              />
-
-              <div className="dashboard-page__field">
-                <label htmlFor="country-select">Country</label>
-                <select
-                  id="country-select"
-                  value={selectedCountry}
-                  onChange={(event) => setSelectedCountry(event.target.value)}
-                  disabled={isSaving}
-                >
-                  <option value="">Select a country</option>
-                  {countries.map((country) => (
-                    <option key={country.code} value={country.code}>
-                      {country.name}{countryCodeToFlag(country.code) ? ` ${countryCodeToFlag(country.code)}` : ''}
-                    </option>
-                  ))}
-                </select>
-                <p className="dashboard-page__country-hint">
-                  <EmojiText>
-                    {countryCodeToFlag(selectedCountry)
-                      ? `${countryCodeToFlag(selectedCountry)} ${currentCountryName}`
-                      : currentCountryName}
-                  </EmojiText>
-                </p>
+              <div className="dashboard-page__punishment-info">
+                <div className="dashboard-page__punishment-field">
+                  <span className="dashboard-page__punishment-label">Reason:</span>
+                  <span className="dashboard-page__punishment-value">{activeSuspension.reason}</span>
+                </div>
+                <div className="dashboard-page__punishment-field">
+                  <span className="dashboard-page__punishment-label">Issued by:</span>
+                  <span className="dashboard-page__punishment-value">{activeSuspension.issuedByUsername}</span>
+                </div>
+                <div className="dashboard-page__punishment-field">
+                  <span className="dashboard-page__punishment-label">Issued at:</span>
+                  <span className="dashboard-page__punishment-value">{activeSuspension.issuedAt.toLocaleString()}</span>
+                </div>
+                <div className="dashboard-page__punishment-field">
+                  <span className="dashboard-page__punishment-label">
+                    {new Date(activeSuspension.endsAt).getTime() - new Date().getTime() <= 0 ? 'Ended at:' : 'Ends at:'}
+                  </span>
+                  <span className="dashboard-page__punishment-value">
+                    {activeSuspension.endsAt.toLocaleString()}
+                  </span>
+                </div>
+                <div className="dashboard-page__punishment-field">
+                  <span className="dashboard-page__punishment-label">Time remaining:</span>
+                  <PunishmentCountdown
+                    endsAt={activeSuspension.endsAt}
+                    isPermanent={new Date(activeSuspension.endsAt).getTime() - new Date('2100-01-01').getTime() > -86400000}
+                  />
+                </div>
               </div>
-
-              {error && <p className="dashboard-page__error">{error}</p>}
-
-              <Button
-                onClick={handleSaveCountry}
-                isLoading={isSaving}
-                disabled={!selectedCountry || !isCountryChanged || isSaving}
-              >
-                Save Country
-              </Button>
             </CardBody>
           </Card>
-        )}
+        ) : (
+          <>
+            {activePage === 'overview' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Dashboard</h2>
+                  <p>Profile summary</p>
+                </CardHeader>
 
-        {activePage === 'devices' && (
-          <Card className="dashboard-page__card" elevated>
-            <CardHeader>
-              <h2>Devices</h2>
-              <p>Ombr devices registered to your account</p>
-            </CardHeader>
-            <CardBody>
-              <p>No devices registered.</p>
-            </CardBody>
-          </Card>
-        )}
+                <CardBody>
+                  <UsernameDisplay
+                    username={user.username}
+                    role={user.role}
+                    country={user.country}
+                    className="dashboard-page__user-row"
+                  />
+                  <p>Welcome to your dashboard!</p>
+                </CardBody>
+              </Card>
+            )}
 
-        {activePage === 'data' && (
-          <Card className="dashboard-page__card" elevated>
-            <CardHeader>
-              <h2>Data</h2>
-              <p>Buy data</p>
-            </CardHeader>
-            <CardBody>
-              <p>No data available.</p>
-            </CardBody>
-          </Card>
-        )}
+            {activePage === 'devices' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Devices</h2>
+                  <p>Ombr devices registered to your account</p>
+                </CardHeader>
+                <CardBody>
+                  <p>No devices registered.</p>
+                </CardBody>
+              </Card>
+            )}
 
-        {activePage === 'credits' && (
-          <Card className="dashboard-page__card" elevated>
-            <CardHeader>
-              <h2>Credits</h2>
-              <p>Buy credits</p>
-            </CardHeader>
-            <CardBody>
-              <p>You cannot buy credits at this time.</p>
-            </CardBody>
-          </Card>
-        )}
+            {activePage === 'data' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Data</h2>
+                  <p>Buy data</p>
+                </CardHeader>
+                <CardBody>
+                  <p>No data available.</p>
+                </CardBody>
+              </Card>
+            )}
 
-        {activePage === 'profile' && (
-          <Card className="dashboard-page__card" elevated>
-            <CardHeader>
-              <h2>Profile</h2>
-            </CardHeader>
-            <CardBody>
-              <UsernameDisplay username={user.username} role={user.role} country={user.country} />
-              <p className="dashboard-page__field">More profile fields can be edited here.</p>
-            </CardBody>
-          </Card>
-        )}
+            {activePage === 'credits' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Credits</h2>
+                  <p>Buy credits</p>
+                </CardHeader>
+                <CardBody>
+                  <p>You cannot buy credits at this time.</p>
+                </CardBody>
+              </Card>
+            )}
 
-        {activePage === 'settings' && (
-          <Card className="dashboard-page__card" elevated>
-            <CardHeader>
-              <h2>Settings</h2>
-            </CardHeader>
-            <CardBody>
-              <p>Application settings go here.</p>
-            </CardBody>
-          </Card>
-        )}
+            {activePage === 'profile' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Profile</h2>
+                  <p>Your profile information</p>
+                </CardHeader>
+                <CardBody>
+                  <ProfileCard
+                    userUuid={user.uuid}
+                    viewerUuid={user.uuid}
+                    viewerRole={user.role}
+                    canEditProfile
+                  />
+                </CardBody>
+              </Card>
+            )}
 
-        {activePage === 'account-settings' && (
-          <Card className="dashboard-page__card" elevated>
-            <CardHeader>
-              <h2>Account Settings</h2>
-            </CardHeader>
-            <CardBody>
-              <p>Account-specific settings go here.</p>
-            </CardBody>
-          </Card>
+            {activePage === 'settings' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Settings</h2>
+                </CardHeader>
+                <CardBody>
+                  <p>Application settings go here.</p>
+                </CardBody>
+              </Card>
+            )}
+
+            {activePage === 'account-settings' && (
+              <Card className="dashboard-page__card" elevated>
+                <CardHeader>
+                  <h2>Account Settings</h2>
+                </CardHeader>
+                <CardBody>
+                  <p>Account-specific settings go here.</p>
+                </CardBody>
+              </Card>
+            )}
+          </>
         )}
       </main>
     </div>

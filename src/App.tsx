@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthPage, ComponentShowcase, DashboardPage } from './pages';
+import { AuthPage, ComponentShowcase, DashboardPage, ProfilePage } from './pages';
 
 function App() {
   return (
@@ -7,6 +7,7 @@ function App() {
       <Routes>
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashboard/profile/:userUuid" element={<ProfilePage />} />
         <Route path="/showcase" element={<ComponentShowcase />} />
         <Route path="/" element={<Navigate to="/auth" replace />} />
       </Routes>
