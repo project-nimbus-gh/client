@@ -40,7 +40,7 @@ export const Sidebar: React.FC<Props> = ({ activeTab, onChange, username = 'unkn
   return (
     <aside className="n-sidebar" aria-label="Sidebar">
       <div className="n-sidebar__top">
-        <h1 className="n-sidebar__title">Caelus</h1>
+        <h1 className="n-sidebar__title">Ombr</h1>
       </div>
 
       <nav className="n-sidebar__tabs" aria-label="Primary">

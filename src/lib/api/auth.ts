@@ -1,9 +1,9 @@
 import type { AuthMePayload, AuthMeResponse, AuthResponsePayload, AuthSession } from '../../../../common';
 import { normalizePunishment } from '../../../../common';
 import { normalizeUser } from '../../../../common';
-import type { CaelusRequestClient } from './client';
+import type { OmbrRequestClient } from './client';
 
-export function createAuthApi(client: CaelusRequestClient) {
+export function createAuthApi(client: OmbrRequestClient) {
   return {
     async register(input: { username: string; password: string; country?: string }) {
       const response = await client.requestJson<AuthResponsePayload>('/api/auth/register', {

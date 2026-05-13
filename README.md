@@ -1,6 +1,6 @@
-# Caelus Client
+# Ombr Client
 
-Frontend web client for Caelus, built with React, TypeScript, and Vite.
+Frontend web client for Ombr, built with React, TypeScript, and Vite.
 
 ## Prerequisites
 

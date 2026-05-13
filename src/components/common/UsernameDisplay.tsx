@@ -2,6 +2,7 @@ import './UsernameDisplay.css';
 import { IconCrown, IconTools } from '@tabler/icons-react';
 import type { PublicUser } from '../../lib/api';
 import type { ReactNode } from 'react';
+import { EmojiText } from './EmojiText';
 
 export interface UsernameDisplayProps {
   username: string;
@@ -46,7 +47,11 @@ export const UsernameDisplay = ({
         </span>
       )}
       <span className="username-display__username">{username}</span>
-      {flag && <span className="username-display__flag">{flag}</span>}
+      {flag && (
+        <span className="username-display__flag">
+          <EmojiText>{flag}</EmojiText>
+        </span>
+      )}
     </div>
   );
 };

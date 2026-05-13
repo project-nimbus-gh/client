@@ -93,7 +93,7 @@ export function ComponentShowcase() {
     <div className="app">
       <div className="app__container">
         <header className="app__header">
-          <h1>Caelus</h1>
+          <h1>Ombr</h1>
           <p>Component Library & Design System</p>
         </header>
 

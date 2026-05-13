@@ -1,5 +1,5 @@
 {
-  "name": "caelus-client",
+  "name": "ombr-client",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tabler/icons-react": "^3.41.1",
+    "@twemoji/api": "^17.0.2",
     "chart.js": "^4.5.1",
     "react": "^19.2.5",
     "react-chartjs-2": "^5.3.1",

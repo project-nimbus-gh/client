@@ -1,13 +1,13 @@
 import { createAuthApi } from './auth';
 import { createDevicesApi } from './devices';
 import { createMarketApi } from './market';
-import { createCaelusRequestClient, type ApiClientConfig, type CaelusRequestClient } from './client';
+import { createOmbrRequestClient, type ApiClientConfig, type OmbrRequestClient } from './client';
 import { createPunishmentsApi } from './punishments';
 import { createStaffApi } from './staff';
 import { createUsersApi } from './users';
 import { createProfileApi } from './profile';
 
-export type CaelusApiClient = CaelusRequestClient & {
+export type OmbrApiClient = OmbrRequestClient & {
   getStatus: () => Promise<string>;
   auth: ReturnType<typeof createAuthApi>;
   users: ReturnType<typeof createUsersApi>;
@@ -18,8 +18,8 @@ export type CaelusApiClient = CaelusRequestClient & {
   market: ReturnType<typeof createMarketApi>;
 };
 
-export function createCaelusApiClient(config: ApiClientConfig = {}): CaelusApiClient {
-  const client = createCaelusRequestClient(config);
+export function createOmbrApiClient(config: ApiClientConfig = {}): OmbrApiClient {
+  const client = createOmbrRequestClient(config);
 
   return {
     ...client,
@@ -36,7 +36,7 @@ export function createCaelusApiClient(config: ApiClientConfig = {}): CaelusApiCl
   };
 }
 
-export const api = createCaelusApiClient();
+export const api = createOmbrApiClient();
 
 export type {
   ApiErrorBody,

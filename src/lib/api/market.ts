@@ -1,8 +1,8 @@
 import type { MarketPurchaseResponse, PurchaseRequest } from '../../../../common';
 import { serializeDate } from '../../../../common';
-import type { CaelusRequestClient } from './client';
+import type { OmbrRequestClient } from './client';
 
-export function createMarketApi(client: CaelusRequestClient) {
+export function createMarketApi(client: OmbrRequestClient) {
   return {
     async purchase(input: PurchaseRequest) {
       return client.requestJson<MarketPurchaseResponse>('/api/market/purchase', {

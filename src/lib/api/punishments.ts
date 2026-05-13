@@ -1,8 +1,8 @@
 import type { PunishmentPayload, PunishmentsMePayload, PunishmentsMeResponse } from '../../../../common';
 import { normalizePunishment, normalizeUser } from '../../../../common';
-import type { CaelusRequestClient } from './client';
+import type { OmbrRequestClient } from './client';
 
-export function createPunishmentsApi(client: CaelusRequestClient) {
+export function createPunishmentsApi(client: OmbrRequestClient) {
   return {
     async me() {
       const response = await client.requestJson<PunishmentsMePayload>('/api/punishments/me');

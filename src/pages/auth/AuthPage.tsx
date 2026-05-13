@@ -114,7 +114,7 @@ export const AuthPage = () => {
     <div className="auth-page">
       <div className="auth-page__container">
         <div className="auth-page__header">
-          <h1>Caelus</h1>
+          <h1>Ombr</h1>
         </div>
 
         <Card elevated className="auth-page__card">
@@ -193,7 +193,7 @@ export const AuthPage = () => {
         </Card>
 
         <div className="auth-page__footer">
-          <p>&copy; 2026 Caelus. All rights reserved.</p>
+          <p>&copy; 2026 Ombr. All rights reserved.</p>
         </div>
       </div>
     </div>

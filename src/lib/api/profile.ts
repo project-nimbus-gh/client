@@ -6,9 +6,9 @@ import type {
   SerializedPublicUser,
 } from '../../../../common';
 import { normalizeUser } from '../../../../common';
-import type { CaelusRequestClient } from './client';
+import type { OmbrRequestClient } from './client';
 
-export function createProfileApi(client: CaelusRequestClient) {
+export function createProfileApi(client: OmbrRequestClient) {
   return {
     async me() {
       const response = await client.requestJson<ProfileMePayload>('/api/profile/me');

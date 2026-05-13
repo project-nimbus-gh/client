@@ -6,9 +6,9 @@ import type {
   StaffUsersPayload,
 } from '../../../../common';
 import { normalizePunishment, normalizeUser } from '../../../../common';
-import type { CaelusRequestClient } from './client';
+import type { OmbrRequestClient } from './client';
 
-export function createStaffApi(client: CaelusRequestClient) {
+export function createStaffApi(client: OmbrRequestClient) {
   return {
     async summary() {
       return client.requestJson<StaffSummary>('/api/staff/summary');

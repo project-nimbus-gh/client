@@ -1,8 +1,8 @@
 import type { DeviceListPayload, DevicePayload } from '../../../../common';
 import { normalizeDevice } from '../../../../common';
-import type { CaelusRequestClient } from './client';
+import type { OmbrRequestClient } from './client';
 
-export function createDevicesApi(client: CaelusRequestClient) {
+export function createDevicesApi(client: OmbrRequestClient) {
   return {
     async register(input: { serial: number; location: { lat: number; lon: number } }) {
       const response = await client.requestJson<DevicePayload>('/api/devices/register', {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, type PublicUser, type ProfileCountriesResponse } from '../../lib/api';
-import { Button, Card, CardBody, CardHeader, UsernameDisplay } from '../../components/common';
+import { Button, Card, CardBody, CardHeader, EmojiText, UsernameDisplay } from '../../components/common';
 import { Sidebar } from '../../components/layout';
 import './DashboardPage.css';
 
@@ -132,14 +132,16 @@ export const DashboardPage = () => {
                   <option value="">Select a country</option>
                   {countries.map((country) => (
                     <option key={country.code} value={country.code}>
-                      {country.name}
+                      {country.name}{countryCodeToFlag(country.code) ? ` ${countryCodeToFlag(country.code)}` : ''}
                     </option>
                   ))}
                 </select>
                 <p className="dashboard-page__country-hint">
-                  {countryCodeToFlag(selectedCountry)
-                    ? `${countryCodeToFlag(selectedCountry)} ${currentCountryName}`
-                    : currentCountryName}
+                  <EmojiText>
+                    {countryCodeToFlag(selectedCountry)
+                      ? `${countryCodeToFlag(selectedCountry)} ${currentCountryName}`
+                      : currentCountryName}
+                  </EmojiText>
                 </p>
               </div>
 
@@ -160,7 +162,7 @@ export const DashboardPage = () => {
           <Card className="dashboard-page__card" elevated>
             <CardHeader>
               <h2>Devices</h2>
-              <p>Caelus devices registered to your account</p>
+              <p>Ombr devices registered to your account</p>
             </CardHeader>
             <CardBody>
               <p>No devices registered.</p>
