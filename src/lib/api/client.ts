@@ -1,4 +1,4 @@
-import { serializeDate, type ApiErrorBody } from '../../../../common';
+import { type ApiErrorBody } from '../../../../common';
 
 export type ApiClientConfig = {
   baseUrl?: string;
@@ -50,6 +50,33 @@ function buildUrl(baseUrl: string, path: string) {
   return `${baseUrl}${path}`;
 }
 
+function isIsoDateString(value: string) {
+  const parsed = new Date(value);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString() === value;
+}
+
+function reviveDateValues<T>(value: T): T {
+  if (value instanceof Date) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    return (isIsoDateString(value) ? new Date(value) : value) as T;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => reviveDateValues(item)) as T;
+  }
+
+  if (!value || typeof value !== 'object') {
+    return value;
+  }
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([key, nestedValue]) => [key, reviveDateValues(nestedValue)])
+  ) as T;
+}
+
 async function readResponseBody(response: Response) {
   const text = await response.text();
   if (!text) return null;
@@ -57,7 +84,7 @@ async function readResponseBody(response: Response) {
   const contentType = response.headers.get('content-type') ?? '';
   if (contentType.includes('application/json')) {
     try {
-      return JSON.parse(text) as unknown;
+      return reviveDateValues(JSON.parse(text) as unknown);
     } catch {
       return text;
     }
@@ -127,7 +154,7 @@ export function createOmbrRequestClient(config: ApiClientConfig = {}) {
     },
     requestJson,
     requestText,
-    serializeDate,
+    // serializeDate removed — use JS Date objects directly when constructing bodies
   };
 }
 

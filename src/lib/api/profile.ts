@@ -3,9 +3,8 @@ import type {
   ProfileCountriesResponse,
   ProfileMePayload,
   ProfileMeResponse,
-  SerializedPublicUser,
+  PublicUser,
 } from '../../../../common';
-import { normalizeUser } from '../../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createProfileApi(client: OmbrRequestClient) {
@@ -13,7 +12,7 @@ export function createProfileApi(client: OmbrRequestClient) {
     async me() {
       const response = await client.requestJson<ProfileMePayload>('/api/profile/me');
       return {
-        user: normalizeUser(response.user),
+        user: response.user,
       } satisfies ProfileMeResponse;
     },
     async getCountries() {
@@ -23,18 +22,18 @@ export function createProfileApi(client: OmbrRequestClient) {
       } satisfies ProfileCountriesResponse;
     },
     async updateCountry(input: { country: string }) {
-      const response = await client.requestJson<{ user: SerializedPublicUser }>('/api/profile/country', {
+      const response = await client.requestJson<{ user: PublicUser }>('/api/profile/country', {
         method: 'PATCH',
         body: input,
       });
-      return normalizeUser(response.user);
+      return response.user;
     },
     async editUser(userUuid: string, input: { country?: string; bio?: string; socialLinks?: Record<string, string | undefined> }) {
-      const response = await client.requestJson<{ user: SerializedPublicUser }>(`/api/profile/${userUuid}`, {
+      const response = await client.requestJson<{ user: PublicUser }>(`/api/profile/${userUuid}`, {
         method: 'PATCH',
         body: input,
       });
-      return normalizeUser(response.user);
+      return response.user;
     },
   };
 }

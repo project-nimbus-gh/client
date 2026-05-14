@@ -37,30 +37,3 @@ export function createOmbrApiClient(config: ApiClientConfig = {}): OmbrApiClient
 }
 
 export const api = createOmbrApiClient();
-
-export type {
-  ApiErrorBody,
-  AuthMePayload,
-  AuthMeResponse,
-  AuthResponsePayload,
-  AuthSession,
-  DeviceListPayload,
-  DevicePayload,
-  MarketPurchaseResponse,
-  PurchaseRequest,
-  PunishmentPayload,
-  PunishmentsMePayload,
-  PunishmentsMeResponse,
-  ProfileCountriesPayload,
-  ProfileCountriesResponse,
-  ProfileMePayload,
-  ProfileMeResponse,
-  StaffPunishmentsPayload,
-  StaffRoleUpdatePayload,
-  StaffRoleUpdateRequest,
-  StaffSummary,
-  StaffUsersPayload,
-  UserMePayload,
-  UserMeResponse,
-} from '../../../../common';
-export type { PublicDevice, PublicPunishment, PublicUser, UserRole } from '../../../../common';

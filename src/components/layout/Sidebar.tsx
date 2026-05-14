@@ -1,6 +1,6 @@
 import React from 'react';
 import './Sidebar.css';
-import { IconGauge, IconSettings, IconUser, IconDatabase, IconPlaceholder, IconTable, IconCoin } from '@tabler/icons-react';
+import { IconGauge, IconSettings, IconUser, IconDatabase, IconPlaceholder, IconTable, IconCoin, IconBan } from '@tabler/icons-react';
 import { UsernameDisplay } from '../../components/common';
 import type { UserRole } from '../../../../common/types/user';
 
@@ -23,6 +23,9 @@ const iconFor = (id: string) => {
       return <IconTable size={18} />;
     case 'credits':
       return <IconCoin size={18} />;
+    case 'jail':
+      return <IconBan
+       size={18} />;
     default:
       return <IconPlaceholder size={18} />;
   }
@@ -34,9 +37,10 @@ type Props = {
   username?: string;
   role?: UserRole;
   country?: string | null;
+  isSuspended?: boolean;
 };
 
-export const Sidebar: React.FC<Props> = ({ activeTab, onChange, username = 'unknown', role, country }) => {
+export const Sidebar: React.FC<Props> = ({ activeTab, onChange, username = 'unknown', role, country, isSuspended = false }) => {
   return (
     <aside className="n-sidebar" aria-label="Sidebar">
       <div className="n-sidebar__top">
@@ -44,17 +48,28 @@ export const Sidebar: React.FC<Props> = ({ activeTab, onChange, username = 'unkn
       </div>
 
       <nav className="n-sidebar__tabs" aria-label="Primary">
-        {tabs.map((t) => (
+        {isSuspended ? (
           <button
-            key={t.id}
-            className={`n-sidebar__tab ${activeTab === t.id ? 'active' : ''}`}
-            onClick={() => onChange(t.id)}
+            className={`n-sidebar__tab active`}
             type="button"
+            onClick={() => onChange('overview')}
           >
-            <span className="n-sidebar__icon">{iconFor(t.id)}</span>
-            <span className="n-sidebar__label">{t.name}</span>
+            <span className="n-sidebar__icon">{iconFor('jail')}</span>
+            <span className="n-sidebar__label">Jail</span>
           </button>
-        ))}
+        ) : (
+          tabs.map((t) => (
+            <button
+              key={t.id}
+              className={`n-sidebar__tab ${activeTab === t.id ? 'active' : ''}`}
+              onClick={() => onChange(t.id)}
+              type="button"
+            >
+              <span className="n-sidebar__icon">{iconFor(t.id)}</span>
+              <span className="n-sidebar__label">{t.name}</span>
+            </button>
+          ))
+        )}
       </nav>
 
       <div className="n-sidebar__spacer" />

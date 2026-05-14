@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  IconCoin,
   IconBrandGithub,
   IconBrandBluesky,
   IconBrandReddit,
@@ -12,12 +11,12 @@ import {
   IconWorld,
 } from '@tabler/icons-react';
 import type { ReactNode } from 'react';
-import { api, type PublicUser, type ProfileCountriesResponse } from '../../lib/api';
+import { api } from '../../lib/api';
 import { Button, UsernameDisplay } from './index';
 import { EmojiText } from './EmojiText';
 import { countryCodeToFlag } from '../../../../common/utils/country';
 import { PunishModal } from './PunishModal';
-import type { SocialLinkType, SocialLinks, UserRole } from '../../../../common/types/user';
+import type { ProfileCountriesResponse, PublicUser, SocialLinkType, SocialLinks, UserRole } from '../../../../common';
 import './ProfileCard.css';
 
 const SOCIAL_LINK_FIELDS: Array<{ key: SocialLinkType; label: string; placeholder: string }> = [
@@ -57,9 +56,14 @@ function getInitialSocialLinkKey(links: SocialLinks): SocialLinkType {
   return (first as SocialLinkType) ?? 'website';
 }
 
-function getRelativeTime(date: Date): string {
+function toDate(value: Date | string): Date {
+  return value instanceof Date ? value : new Date(value);
+}
+
+function getRelativeTime(date: Date | string): string {
+  const resolvedDate = toDate(date);
   const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
+  const diffMs = now.getTime() - resolvedDate.getTime();
   const diffSecs = Math.floor(diffMs / 1000);
   const diffMins = Math.floor(diffSecs / 60);
   const diffHours = Math.floor(diffMins / 60);
@@ -77,8 +81,8 @@ function getRelativeTime(date: Date): string {
   return 'just now';
 }
 
-function formatDisplayDate(date: Date): string {
-  return date.toLocaleDateString('en-GB');
+function formatDisplayDate(date: Date | string): string {
+  return toDate(date).toLocaleDateString('en-GB');
 }
 
 export interface ProfileCardProps {
@@ -87,6 +91,7 @@ export interface ProfileCardProps {
   viewerRole?: UserRole;
   canEditProfile?: boolean;
   isPunishable?: boolean;
+  onPunishSelf?: () => void;
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -95,6 +100,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   viewerRole,
   canEditProfile = false,
   isPunishable = false,
+  onPunishSelf,
 }) => {
   const [user, setUser] = useState<PublicUser | null>(null);
   const [countries, setCountries] = useState<ProfileCountriesResponse['countries']>([]);
@@ -164,7 +170,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   const isStaffOrOwner = viewerRole === 'staff' || viewerRole === 'owner';
   const isSelfProfile = viewerUuid === user?.uuid;
   const canEditThisProfile = canEditProfile || isSelfProfile || isStaffOrOwner;
-  const canPunishThisProfile = (isPunishable || isStaffOrOwner) && !isSelfProfile;
+  const canPunishThisProfile = (isPunishable || isStaffOrOwner) && !!user && (user.role !== 'owner' || isSelfProfile);
 
   if (isLoading) {
     return <div className="profile-card profile-card--loading">Loading profile...</div>;
@@ -179,10 +185,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       <div className="profile-card__header">
         <div className="profile-card__identity">
           <UsernameDisplay username={user.username} role={user.role} country={user.country} />
-          <div className="profile-card__credits">
-            <IconCoin size={16} className="profile-card__info-icon" />
-            <span className="profile-card__info-text">{user.credits}</span>
-          </div>
         </div>
         <div className="profile-card__actions">
           {canEditThisProfile && !isEditingProfile && (
@@ -417,6 +419,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
           username={user.username}
           onClose={() => setIsPunishModalOpen(false)}
           onPunish={() => setIsPunishModalOpen(false)}
+          isSelfPunishment={viewerUuid === userUuid}
+          onSelfPunishment={onPunishSelf}
         />
       )}
     </div>

@@ -1,6 +1,5 @@
 import type { UserMePayload, UserMeResponse } from '../../../../common';
-import type { SerializedPublicUser } from '../../../../common';
-import { normalizePunishment, normalizeUser } from '../../../../common';
+import type { PublicUser } from '../../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createUsersApi(client: OmbrRequestClient) {
@@ -8,15 +7,15 @@ export function createUsersApi(client: OmbrRequestClient) {
     async me() {
       const response = await client.requestJson<UserMePayload>('/api/users/me');
       return {
-        user: normalizeUser(response.user),
-        activeSuspension: response.activeSuspension ? normalizePunishment(response.activeSuspension) : null,
+        user: response.user,
+        activeSuspension: response.activeSuspension || null,
       } satisfies UserMeResponse;
     },
     async getByUuid(uuid: string) {
-      const response = await client.requestJson<{ user: SerializedPublicUser; requestedBy: SerializedPublicUser }>(`/api/users/${uuid}`);
+      const response = await client.requestJson<{ user: PublicUser; requestedBy: PublicUser }>(`/api/users/${uuid}`);
       return {
-        user: normalizeUser(response.user),
-        requestedBy: normalizeUser(response.requestedBy),
+        user: response.user,
+        requestedBy: response.requestedBy,
       };
     },
   };

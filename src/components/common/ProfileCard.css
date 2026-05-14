@@ -61,27 +61,7 @@
   user-select: text;
 }
 
-.profile-card__credits {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  background: var(--bg-base);
-  border: 1px solid var(--border-color);
-  font-size: 0.95rem;
-  line-height: 1;
-}
 
-.profile-card__info-icon {
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-
-.profile-card__info-text {
-  color: var(--text-primary);
-  font-weight: var(--font-weight-md);
-}
 
 .profile-card__meta {
   padding: 0;

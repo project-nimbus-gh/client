@@ -1,5 +1,4 @@
 import type { PunishmentPayload, PunishmentsMePayload, PunishmentsMeResponse } from '../../../../common';
-import { normalizePunishment, normalizeUser } from '../../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createPunishmentsApi(client: OmbrRequestClient) {
@@ -7,14 +6,14 @@ export function createPunishmentsApi(client: OmbrRequestClient) {
     async me() {
       const response = await client.requestJson<PunishmentsMePayload>('/api/punishments/me');
       return {
-        user: normalizeUser(response.user),
-        activeSuspension: response.activeSuspension ? normalizePunishment(response.activeSuspension) : null,
-        punishments: response.punishments.map(normalizePunishment),
+        user: response.user,
+        activeSuspension: response.activeSuspension || null,
+        punishments: response.punishments,
       } satisfies PunishmentsMeResponse;
     },
     async getById(id: string) {
       const response = await client.requestJson<PunishmentPayload>(`/api/punishments/${id}`);
-      return normalizePunishment(response.punishment);
+      return response.punishment;
     },
   };
 }

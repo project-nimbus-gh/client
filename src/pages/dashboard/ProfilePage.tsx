@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api, type PublicUser } from '../../lib/api';
+import { api } from '../../lib/api';
+import type { PublicUser } from '../../../../common';
 import { Card, CardBody, CardHeader, ProfileCard } from '../../components/common';
 import { Sidebar } from '../../components/layout';
 import './ProfilePage.css';

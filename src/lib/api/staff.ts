@@ -1,11 +1,11 @@
 import type {
+  Punishment,
   StaffPunishmentsPayload,
   StaffRoleUpdatePayload,
   StaffRoleUpdateRequest,
   StaffSummary,
   StaffUsersPayload,
 } from '../../../../common';
-import { normalizePunishment, normalizeUser } from '../../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createStaffApi(client: OmbrRequestClient) {
@@ -15,32 +15,32 @@ export function createStaffApi(client: OmbrRequestClient) {
     },
     async listUsers() {
       const response = await client.requestJson<StaffUsersPayload>('/api/staff/users');
-      return response.users.map(normalizeUser);
+      return response.users;
     },
     async updateRole(userUuid: string, input: StaffRoleUpdateRequest) {
       const response = await client.requestJson<StaffRoleUpdatePayload>(`/api/staff/role/${userUuid}`, {
         method: 'POST',
         body: input,
       });
-      return normalizeUser(response.user);
+      return response.user;
     },
     punishments: {
       async list() {
         const response = await client.requestJson<StaffPunishmentsPayload>('/api/staff/punishments');
-        return response.punishments.map(normalizePunishment);
+        return response.punishments;
       },
       async issue(input: { username?: string; userUuid?: string; reason: string; durationMinutes?: number }) {
-        const response = await client.requestJson<{ punishment: Parameters<typeof normalizePunishment>[0] }>('/api/staff/punishments', {
+        const response = await client.requestJson<{ punishment: Punishment }>('/api/staff/punishments', {
           method: 'POST',
           body: input,
         });
-        return normalizePunishment(response.punishment);
+        return response.punishment;
       },
       async lift(punishmentId: string) {
-        const response = await client.requestJson<{ punishment: Parameters<typeof normalizePunishment>[0] }>(`/api/staff/punishments/${punishmentId}/lift`, {
+        const response = await client.requestJson<{ punishment: Punishment }>(`/api/staff/punishments/${punishmentId}/lift`, {
           method: 'POST',
         });
-        return normalizePunishment(response.punishment);
+        return response.punishment;
       },
     },
   };

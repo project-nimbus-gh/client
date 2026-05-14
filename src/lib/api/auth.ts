@@ -1,6 +1,4 @@
 import type { AuthMePayload, AuthMeResponse, AuthResponsePayload, AuthSession } from '../../../../common';
-import { normalizePunishment } from '../../../../common';
-import { normalizeUser } from '../../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createAuthApi(client: OmbrRequestClient) {
@@ -15,7 +13,7 @@ export function createAuthApi(client: OmbrRequestClient) {
       client.setAuthToken(response.token);
 
       return {
-        user: normalizeUser(response.user),
+        user: response.user,
         token: response.token,
       } satisfies AuthSession;
     },
@@ -29,15 +27,15 @@ export function createAuthApi(client: OmbrRequestClient) {
       client.setAuthToken(response.token);
 
       return {
-        user: normalizeUser(response.user),
+        user: response.user,
         token: response.token,
       } satisfies AuthSession;
     },
     async me() {
       const response = await client.requestJson<AuthMePayload>('/api/auth/me');
       return {
-        user: normalizeUser(response.user),
-        suspension: response.suspension ? normalizePunishment(response.suspension) : null,
+        user: response.user,
+        suspension: response.suspension || null,
       } satisfies AuthMeResponse;
     },
     async logout() {

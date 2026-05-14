@@ -1,5 +1,4 @@
-import type { DeviceListPayload, DevicePayload } from '../../../../common';
-import { normalizeDevice } from '../../../../common';
+import type { DeviceListPayload, DevicePayload } from '../../../../common'; 
 import type { OmbrRequestClient } from './client';
 
 export function createDevicesApi(client: OmbrRequestClient) {
@@ -9,15 +8,15 @@ export function createDevicesApi(client: OmbrRequestClient) {
         method: 'POST',
         body: input,
       });
-      return normalizeDevice(response.device);
+      return response.device;
     },
     async listMine() {
       const response = await client.requestJson<DeviceListPayload>('/api/devices/mine');
-      return response.devices.map(normalizeDevice);
+      return response.devices;
     },
     async getBySerial(serial: number) {
       const response = await client.requestJson<DevicePayload>(`/api/devices/${serial}`);
-      return normalizeDevice(response.device);
+      return response.device;
     },
   };
 }

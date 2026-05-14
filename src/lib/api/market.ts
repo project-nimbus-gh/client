@@ -1,5 +1,5 @@
 import type { MarketPurchaseResponse, PurchaseRequest } from '../../../../common';
-import { serializeDate } from '../../../../common';
+// serializeDate removed; JSON.stringify will convert Date to ISO string automatically.
 import type { OmbrRequestClient } from './client';
 
 export function createMarketApi(client: OmbrRequestClient) {
@@ -9,8 +9,8 @@ export function createMarketApi(client: OmbrRequestClient) {
         method: 'POST',
         body: {
           ...input,
-          start: serializeDate(input.start),
-          end: serializeDate(input.end),
+          start: input.start,
+          end: input.end,
         },
       });
     },
