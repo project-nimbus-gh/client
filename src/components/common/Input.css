@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 0.25rem;
 
-  &--full-width {
+  :is(--full-width) {
     width: 100%;
   }
 }
@@ -46,7 +46,7 @@
     border-color: hsl(0, 0%, 14%);
   }
 
-  &--error {
+  :is(--error) {
     border-color: var(--accent-red);
 
     &:focus {
