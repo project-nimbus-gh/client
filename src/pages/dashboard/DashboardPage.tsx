@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../../lib/api';
-import type { Punishment, PublicUser } from '../../../../common';
+import type { Punishment, PublicUser } from '../../../common';
 import { Card, CardBody, CardHeader, UsernameDisplay, ProfileCard, Button } from '../../components/common';
 import { Sidebar } from '../../components/layout';
 import './DashboardPage.css';
@@ -60,7 +60,7 @@ function getTimeRemaining(date: Date | string): string {
   return 'in less than a minute';
 }
 
-function PunishmentCountdown({ endsAt, isPermanent }: { endsAt: Date | null; isPermanent: boolean }) {
+function PunishmentCountdown({ endsAt, isPermanent }: Readonly<{ endsAt: Date | null; isPermanent: boolean }>) {
   const [timeLeft, setTimeLeft] = useState('');
 
   useEffect(() => {
@@ -70,7 +70,7 @@ function PunishmentCountdown({ endsAt, isPermanent }: { endsAt: Date | null; isP
         return;
       }
 
-      const now = new Date().getTime();
+      const now = Date.now();
       const end = endsAt!.getTime();
       const diff = end - now;
 
@@ -139,7 +139,7 @@ export const DashboardPage = () => {
     } catch (err) {
       console.error('Failed to refresh user data after punishment:', err);
     }
-  
+
     if (!activeSuspension) return;
 
     setIsLiftingPunishment(true);

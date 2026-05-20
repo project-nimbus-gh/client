@@ -1,4 +1,4 @@
-import { type ApiErrorBody } from '../../../../common';
+import { type ApiErrorBody } from '../../../common';
 
 export type ApiClientConfig = {
   baseUrl?: string;
@@ -31,17 +31,17 @@ function normalizeBaseUrl(baseUrl?: string) {
 }
 
 function readStoredToken(storageKey: string) {
-  if (typeof window === 'undefined') return null;
-  return window.localStorage.getItem(storageKey);
+  if (globalThis.window === undefined) return null;
+  return globalThis.localStorage.getItem(storageKey);
 }
 
 function writeStoredToken(storageKey: string, token: string | null) {
-  if (typeof window === 'undefined') return;
+  if (typeof globalThis === 'undefined') return;
 
   if (token) {
-    window.localStorage.setItem(storageKey, token);
+    globalThis.localStorage.setItem(storageKey, token);
   } else {
-    window.localStorage.removeItem(storageKey);
+    globalThis.localStorage.removeItem(storageKey);
   }
 }
 

@@ -1,6 +1,6 @@
 import './UsernameDisplay.css';
 import { IconCrown, IconTools } from '@tabler/icons-react';
-import type { PublicUser } from '../../../../common';
+import type { PublicUser } from '../common';
 import type { ReactNode } from 'react';
 import { EmojiText } from './EmojiText';
 

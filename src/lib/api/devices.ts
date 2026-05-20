@@ -1,4 +1,4 @@
-import type { DeviceListPayload, DevicePayload } from '../../../../common'; 
+import type { DeviceListPayload, DevicePayload } from '../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createDevicesApi(client: OmbrRequestClient) {

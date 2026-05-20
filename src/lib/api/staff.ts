@@ -5,7 +5,7 @@ import type {
   StaffRoleUpdateRequest,
   StaffSummary,
   StaffUsersPayload,
-} from '../../../../common';
+} from '../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createStaffApi(client: OmbrRequestClient) {

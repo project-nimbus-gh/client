@@ -14,9 +14,9 @@ import type { ReactNode } from 'react';
 import { api } from '../../lib/api';
 import { Button, UsernameDisplay } from './index';
 import { EmojiText } from './EmojiText';
-import { countryCodeToFlag } from '../../../../common/utils/country';
+import { countryCodeToFlag } from '../common/utils/country';
 import { PunishModal } from './PunishModal';
-import type { ProfileCountriesResponse, PublicUser, SocialLinkType, SocialLinks, UserRole } from '../../../../common';
+import type { ProfileCountriesResponse, PublicUser, SocialLinkType, SocialLinks, UserRole } from '../common';
 import './ProfileCard.css';
 
 const SOCIAL_LINK_FIELDS: Array<{ key: SocialLinkType; label: string; placeholder: string }> = [

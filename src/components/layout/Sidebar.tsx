@@ -2,7 +2,7 @@ import React from 'react';
 import './Sidebar.css';
 import { IconGauge, IconSettings, IconUser, IconDatabase, IconPlaceholder, IconTable, IconCoin, IconBan } from '@tabler/icons-react';
 import { UsernameDisplay } from '../../components/common';
-import type { UserRole } from '../../../../common/types/user';
+import type { UserRole } from '../common/types/user';
 
 type Tab = { id: string; name: string };
 
@@ -25,7 +25,7 @@ const iconFor = (id: string) => {
       return <IconCoin size={18} />;
     case 'jail':
       return <IconBan
-       size={18} />;
+        size={18} />;
     default:
       return <IconPlaceholder size={18} />;
   }

@@ -1,5 +1,4 @@
-import type { UserMePayload, UserMeResponse } from '../../../../common';
-import type { PublicUser } from '../../../../common';
+import type { UserMePayload, UserMeResponse, PublicUser } from '../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createUsersApi(client: OmbrRequestClient) {

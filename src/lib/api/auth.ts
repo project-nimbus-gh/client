@@ -1,4 +1,4 @@
-import type { AuthMePayload, AuthMeResponse, AuthResponsePayload, AuthSession } from '../../../../common';
+import type { AuthMePayload, AuthMeResponse, AuthResponsePayload, AuthSession } from '../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createAuthApi(client: OmbrRequestClient) {

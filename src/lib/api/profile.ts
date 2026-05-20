@@ -4,7 +4,7 @@ import type {
   ProfileMePayload,
   ProfileMeResponse,
   PublicUser,
-} from '../../../../common';
+} from '../../../common';
 import type { OmbrRequestClient } from './client';
 
 export function createProfileApi(client: OmbrRequestClient) {
